@@ -1,81 +1,85 @@
-jonstructs
+= jonstructs: Useful language constructs for distributed Scala =
 
-A library of useful Scala language constructs
+Featuring
 
 * Run blocks
-* Event sources
+* Events
 
-Run Blocks
+== Run Blocks ==
 
-* Run at a scheduled time
+=== Run at a scheduled time ===
 
-run in 3 seconds {
-
-}
-
-* Run at regular intervals
-
-run every 5 seconds {
-
-}
-
-* Run until a timeout has elapsed
-
-run until 3 seconds {
-
-}
-
-* Retry an operation a number of times
-
-retry 3 times every 5 seconds {
-
-}
-
-* A simpler interface, if you prefer
-
-runEvery(ms=1200) {..}
-runIn(ms=1200) {..}
-runUntil(ms=1200) {..}
-
-* You can still specify time units
-
-runEvery(12, TimeUnit.MINUTES) {..}
-runIn(12, TimeUnit.MINUTES) {..}
-runUntil(12, TimeUnit.MINUTES) {..}
-
-Event Sources
-
-* Invert control to decouple components
-
-val onNewConnection = new EventSource[MyUser]()
-while(running) {
-  listenForUsers foreach onNewConnection.emit(_)
-}
-
-* React to events
-
-class MyUserGreeter(listener: MyUserListener) with ObserveBlock {
-  observe(listener.onNewConnection) { user =>
-    user.send("Hello %s!" format user.name)
+  run in 3 seconds {
+    // code that gets run soon
   }
-}
 
-* React to events, let queued callbacks run in our own thread
+=== Run at regular intervals ===
 
-class MyUserGreeter(listener: MyUserListener) with ObserveWithQueueBlock with Terminable with Runnable {
-  observe(listener.onNewConnection) { user =>
-    user.send("Hello %s!" format user.name)
+  run every 5 seconds {
+    // code that gets called regularly
   }
-  def run() {
-    while(running) {
-      handleEvents()
+
+=== Run until a timeout has elapsed ===
+
+  run until 3 seconds {
+    // code that has a limited time. see the FAQ
+  }
+
+=== Retry an operation a number of times ===
+
+  retry 3 times every 5 seconds {
+    //
+  }
+
+=== Or, a simpler interface ===
+
+  runEvery(ms=1200) {..}
+
+  runIn(ms=1200) {..}
+
+  runUntil(ms=1200) {..}
+
+=== Java-style ===
+
+  runEvery(1200, TimeUnit.MILLISECONDS) {..}
+
+  runIn(12, TimeUnit.MINUTES) {..}
+
+  runUntil(100000, TimeUnit.MICROSECONDS) {..}
+
+== Event Sources ==
+
+=== Invert control to decouple components ===
+
+  val onNewConnection = new EventSource[MyUser]()
+  while(running) {
+    listenForUsers foreach onNewConnection.emit(_)
+  }
+
+=== React to events ===
+
+  class MyUserGreeter(listener: MyUserListener) with ObserveBlock {
+    observe(listener.onNewConnection) { user =>
+      user.send("Hello %s!" format user.name)
     }
   }
-}
 
-Tips
+=== React to events, let queued callbacks run in our own thread ===
 
-The new constructs make no happens-before guarantees.
+  class MyUserGreeter(listener: MyUserListener) with ObserveWithQueueBlock with Terminable with Runnable {
+    observe(listener.onNewConnection) { user =>
+      user.send("Hello %s!" format user.name)
+    }
+    def run() {
+      while(running) {
+        handleEvents()
+      }
+    }
+  }
+
+== Tips ==
+
+=== The new constructs have no happens-before guarantees ===
 
 # Only share immutable data
 # Ensure shared mutable primitives are volatile
@@ -83,14 +87,21 @@ The new constructs make no happens-before guarantees.
 
 e.g.
 
-run until 3 seconds {
-  synchronize {
-    slowMethod()
+  run until 3 seconds {
+    synchronize {
+      slowMethod()
+    }
   }
-}
-synchronize {
-  checkSlowMethodResults()
-}
+  synchronize {
+    checkSlowMethodResults()
+  }
+
+=== The timeout block will do one of the following ===
+
+# Return the result of the code block
+# Throw a TimeoutException if we have run out of time but the code block hasn't returned
+# Throw an InterruptedException when a blocking I/O call has been woken up
+# Throw any other Exception as if it was a regular function call
 
 
 
