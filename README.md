@@ -35,14 +35,14 @@ Run blocks give you temporal control over execution
 
 ### Or if you prefer.. ###
 
-    runIn(ms=1200) {..}
-    runIn(12, TimeUnit.MINUTES) {..}
+    runDelayed(ms=60000) {..}
+    runDelayed(1, TimeUnit.MINUTES) {..}
 
     runEvery(ms=1200) {..}
     runEvery(1200, TimeUnit.MILLISECONDS) {..}
 
     runGiven(ms=1200) {..}
-    runGiven(100000, TimeUnit.MICROSECONDS) {..}
+    runGiven(1200000, TimeUnit.MICROSECONDS) {..}
 
 ## Event Sources ##
 
