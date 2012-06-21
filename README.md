@@ -1,4 +1,4 @@
-# jonstructs: Useful language constructs for distributed Scala #
+# jonstructs: Language constructs for readable, parallel Scala #
 
 Featuring
 
@@ -7,45 +7,42 @@ Featuring
 
 ## Run Blocks ##
 
-### Run at a scheduled time ###
+Run blocks give you temporal control over execution
 
-    run in 3 seconds {
+### Do something at a scheduled time ###
+
+    in 3 seconds {
         // code that gets run soon
     }
 
-### Run at regular intervals ###
+### Do something at regular intervals ###
 
-    run every 5 seconds {
+    every 5 seconds {
         // code that gets called regularly
     }
 
-### Run until a timeout has elapsed ###
+### Do something until a timeout has elapsed ###
 
-    run until 3 seconds {
+    given 3 seconds {
         // code that has a limited time. see the FAQ
     }
 
-### Retry an operation a number of times ###
+### Try, try again ###
 
     retry 3 times every 5 seconds {
         // code that is repeatedly run at regular intervals
     }
 
-### Or, a simpler interface ###
-
-    runEvery(ms=1200) {..}
+### Or if you prefer.. ###
 
     runIn(ms=1200) {..}
-
-    runUntil(ms=1200) {..}
-
-### Java-style ###
-
-    runEvery(1200, TimeUnit.MILLISECONDS) {..}
-
     runIn(12, TimeUnit.MINUTES) {..}
 
-    runUntil(100000, TimeUnit.MICROSECONDS) {..}
+    runEvery(ms=1200) {..}
+    runEvery(1200, TimeUnit.MILLISECONDS) {..}
+
+    runGiven(ms=1200) {..}
+    runGiven(100000, TimeUnit.MICROSECONDS) {..}
 
 ## Event Sources ##
 

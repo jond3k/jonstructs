@@ -18,6 +18,7 @@ class ThreadLoopHandle(action: () => Unit, sleepMs: Long, deferred: Boolean)
         interval()
       }
       log.info("Stopped loop for {}", action.getClass)
+
     }
   }
 
