@@ -7,7 +7,7 @@ Featuring
 
 ## Run Blocks ##
 
-Run blocks give you temporal control over execution. Add to your class using _with TimeBlocks_.
+Run blocks give you temporal control over execution. Mix _TimeBlocks_ in to your class.
 
 ### Do something at a scheduled time ###
 
