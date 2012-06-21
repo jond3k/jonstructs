@@ -7,7 +7,7 @@ Featuring
 
 ## Run Blocks ##
 
-Run blocks give you temporal control over execution. Mix _TimeBlocks_ in to your class.
+Run blocks give you temporal control over execution. Add the _TimeBlocks_ trait to your class.
 
 ### Do something at a scheduled time ###
 
@@ -58,6 +58,8 @@ These methods might be more comfortable for someone who doesn't want to have to 
 
 ## Event Sources ##
 
+Taken from the paper "Deprecating the Observer Pattern" (Maier et al) we have a neat way to subscribe to events
+
 ### Invert control to decouple components ###
 
     val onNewConnection = new EventSource[MyUser]()
@@ -65,22 +67,23 @@ These methods might be more comfortable for someone who doesn't want to have to 
         listenForUsers foreach(onNewConnection.emit(_))
     }
 
-Don't call us, we'll call you
+Don't call us, we'll call you.
 
 ### React to events ###
 
-    class MyUserGreeter(listener: MyUserListener) with ObserveBlock {
+    class MyUserGreeter(listener: MyUserListener) extends ObserveBlock {
         observe(listener.onNewConnection) { user =>
             user.send("Hello %s!" format user.name)
         }
     }
 
-
+You can attach callbacks to these events.
 
 ### React to events, let queued callbacks run in our own thread ###
 
-    class MyUserGreeter(listener: MyUserListener) with ObserveWithQueueBlock with Terminable with Runnable {
+    class MyUserGreeter(listener: MyUserListener) extends ObserveWithQueueBlock with Terminable with Runnable {
         observe(listener.onNewConnection) { user =>
+            // This IO operation might take 2 seconds
             user.send("Hello %s!" format user.name)
         }
         def run() {
@@ -90,9 +93,11 @@ Don't call us, we'll call you
         }
     }
 
-Sometimes the event we're observing is running a tight loop that we don't want to interfere with.
+Sometimes the event we're observing is running a tight loop that we don't want to interfere with. You can instead have
+your events pushed to a queue so you can run them in your own thread.
 
     def observerMayDropEvents = false
+    def observerQueueSize     = 200
 
 By default we will drop events if the queue gets too big. Set this to false to block the event source.
 
@@ -100,7 +105,7 @@ By default we will drop events if the queue gets too big. Set this to false to b
 
 ### The new constructs have no happens-before guarantees ###
 
-So
+Therefore
 
 * Only share immutable data
 * OR ensure shared mutable primitives are volatile or atomic
