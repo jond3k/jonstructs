@@ -11,7 +11,7 @@ Run blocks give you temporal control over execution
 
 ### Do something at a scheduled time ###
 
-    in 3 seconds {
+    delayed 3 seconds {
         // code that gets run soon
     }
 
@@ -24,7 +24,7 @@ Run blocks give you temporal control over execution
 ### Do something until a timeout has elapsed ###
 
     given 3 seconds {
-        // code that has a limited time. see the FAQ
+        // code that has a limited time to execute*
     }
 
 ### Try, try again ###
@@ -78,13 +78,15 @@ Run blocks give you temporal control over execution
 
 ### The new constructs have no happens-before guarantees ###
 
-1. Only share immutable data
-1. Ensure shared mutable primitives are volatile
-1. Ensure shared objects are synchronized
+So
+
+* Only share immutable data
+* OR ensure shared mutable primitives are volatile or atomic
+* OR ensure shared objects are synchronized
 
 e.g.
 
-    run until 3 seconds {
+    given 3 seconds {
         synchronize {
             slowMethod()
         }
