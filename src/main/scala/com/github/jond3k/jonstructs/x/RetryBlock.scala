@@ -1,5 +1,6 @@
-package com.github.jond3k.jonstructs
+package com.github.jond3k.jonstructs.x
 
+import com.github.jond3k.jonstructs.x.Logging
 import com.github.jond3k.jonstructs.Logging
 
 /**

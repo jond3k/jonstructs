@@ -1,8 +1,9 @@
-package com.github.jond3k.jonstructs
+package com.github.jond3k.jonstructs.x
 
 import collection.mutable.SynchronizedQueue
 import events.{ObserverWithQueue, EventSource}
 import java.util.NoSuchElementException
+import com.github.jond3k.jonstructs.events.{ObserverWithQueue, EventSource}
 
 /**
  *

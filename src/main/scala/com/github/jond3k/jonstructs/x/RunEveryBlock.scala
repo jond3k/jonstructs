@@ -1,4 +1,4 @@
-package com.github.jond3k.jonstructs
+package com.github.jond3k.jonstructs.x
 
 import tasks.ThreadLoopHandle
 import com.github.jond3k.jonstructs.tasks.ThreadLoopHandle

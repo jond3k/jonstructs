@@ -46,8 +46,11 @@
 
     </dependencies>
     <build>
-        <plugins>
+        <!-- setup source directory defaults -->
+        <sourceDirectory>src/main/scala</sourceDirectory>
+        <testSourceDirectory>src/test/scala</testSourceDirectory>
 
+        <plugins>
             <!-- the maven scala plugin allows compilation of scala source code -->
             <plugin>
                 <groupId>org.scala-tools</groupId>

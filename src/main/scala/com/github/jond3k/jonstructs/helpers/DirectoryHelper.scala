@@ -2,6 +2,7 @@ package com.github.jond3k.jonstructs.helpers
 
 import java.util.Random
 import java.io.File
+import java.util
 
 /**
  * Licenses are for teh weak
@@ -11,15 +12,7 @@ import java.io.File
 /**
  * Allows creation of randomly named directories. Useful when you need to provide a folder to mocks and fakes.
  */
-trait TemporaryDirectoryHelper {
-
-  /**
-   * The random number generator.
-   *
-   * Considered placing this in a companion object but there's no guarantee that Random is thread-safe (even though it
-   * is in OpenJDK and SunJDK)
-   */
-  private lazy val jonstructsRandom = new Random()
+trait DirectoryHelper {
 
   /**
    * Creates a new temporary directory
@@ -31,11 +24,18 @@ trait TemporaryDirectoryHelper {
    * @param prefix The prefix to use
    * @return A path to a new test folder. Go forth and multiply!
    */
-  def newTemporaryDirectory(prefix: String = "jonstructs"): File = {
+  def newTempDir(prefix: String = "jonstructs"): File = {
     val ioDir = System.getProperty("java.io.tmpdir")
     val f = new File(ioDir, prefix + jonstructsRandom.nextInt(1000000))
     f.mkdirs()
     f.deleteOnExit()
     f
   }
+
+  /**
+   * The random number generator.
+   *
+   * There's no guarantee this is thread safe across different JVMs, but looks safe in OpenJDK
+   */
+  private lazy val jonstructsRandom = new util.Random()
 }
