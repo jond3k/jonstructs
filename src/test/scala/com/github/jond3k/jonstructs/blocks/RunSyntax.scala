@@ -1,5 +1,7 @@
 package com.github.jond3k.jonstructs.blocks
 
+import java.util.concurrent.TimeUnit
+
 /**
  * This class isn't an executable specification, it just ensures the DSL syntax can be parsed by the compiler
  *
@@ -7,21 +9,20 @@ package com.github.jond3k.jonstructs.blocks
  */
 class RunSyntax extends RunBlocks {
 
-  delayed 3 seconds {
+  delayed(ms=300) {
     // code that gets run later
   }
 
-  every 5 seconds {
+  every(5, TimeUnit.SECONDS) {
     // code that gets called regularly
   }
 
-  given 3 seconds {
+  timeout(ms=300) {
     // code that has a limited time to execute*
   }
 
-  retry 3 times every 5 seconds {
+  retry(times=3, every=5, unit=TimeUnit.SECONDS) {
     // code that is repeatedly run at regular intervals
   }
-
 
 }
