@@ -8,6 +8,10 @@ import java.util.concurrent.TimeUnit
  */
 trait RetryBlock {
 
+  def retry(ms: Long)(fn: => Unit) {
+    retry(-1, ms)
+  }
+
   /**
    *
    * @param times

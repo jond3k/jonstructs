@@ -1,6 +1,7 @@
-package com.github.jond3k.jonstructs.x
+package com.github.jond3k.jonstructs
 
 import java.util.concurrent.atomic.AtomicBoolean
+import com.github.jond3k.jonstructs.Logging
 
 trait Terminable extends Logging {
 
@@ -27,8 +28,10 @@ trait Terminable extends Logging {
    * Call to flip the termination flag to true
    */
   def terminate() {
-    _terminating.set(true)
-    log.info("Stopping")
+    if (_terminating.compareAndSet(false, true)) {
+      _terminating.notifyAll()
+      log.info("Stopping")
+    }
   }
 
   /**
@@ -36,5 +39,11 @@ trait Terminable extends Logging {
    */
   def stop() {
     terminate()
+  }
+
+  def join() {
+    while(running) {
+      _terminating.wait()
+    }
   }
 }

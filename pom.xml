@@ -124,6 +124,17 @@
         </pluginRepository>
     </pluginRepositories>
 
+    <distributionManagement>
+        <repository>
+            <id>repo</id>
+            <url>https://github.com/jond3k/jond3k-mvn-repo/raw/master/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshot-repo</id>
+            <url>https://github.com/jond3k/jond3k-mvn-repo/raw/master/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <repositories>
     </repositories>
 </project>
