@@ -17,7 +17,7 @@ trait TimeoutBlock {
   /**
    * The default timeout to use
    */
-  private val defaultTimeout = 15000
+  /*private val defaultTimeout = 15000
 
   /**
    * Run something on a separate thread with a maximum time bound
@@ -98,5 +98,5 @@ trait TimeoutBlock {
     catch {
       case e: Throwable => throw throwableResponse(executor, e, ms)
     }
-  }
+  }*/
 }

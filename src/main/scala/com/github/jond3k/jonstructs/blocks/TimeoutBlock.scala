@@ -1,14 +1,12 @@
 package com.github.jond3k.jonstructs.blocks
 
-import java.util.concurrent.TimeUnit
-
 /**
  *
  * @author Jon Davey <jond3k@gmail.com>
  */
 trait TimeoutBlock {
 
-  /**
+  /*/**
    *
    * @param ms
    * @param fn
@@ -27,5 +25,5 @@ trait TimeoutBlock {
    */
   def timeout(t: Long, unit: TimeUnit)(fn: => Unit) {
 
-  }
+  }*/
 }

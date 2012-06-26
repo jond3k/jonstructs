@@ -14,7 +14,7 @@ trait BlockScheduling {
    *
    * @param fn
    */
-  class RunBlockRunnable(fn: => Unit) extends Runnable {
+  /*class RunBlockRunnable(fn: => Unit) extends Runnable {
     def run() {
       fn
     }
@@ -53,5 +53,5 @@ trait BlockScheduling {
    */
   def runBlockSchedule(fn: => Unit, t: Long, unit: TimeUnit) {
     runBlockScheduler.schedule(new RunBlockRunnable(fn), t, unit)
-  }
+  }*/
 }

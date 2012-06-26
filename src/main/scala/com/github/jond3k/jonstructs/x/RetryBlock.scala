@@ -1,7 +1,7 @@
 package com.github.jond3k.jonstructs.x
-
-import com.github.jond3k.jonstructs.x.Logging
+/*
 import com.github.jond3k.jonstructs.Logging
+
 
 /**
  * Allows you to retry calling a method block
@@ -55,3 +55,4 @@ trait RetryBlock extends Logging {
     }
   }
 }
+*/

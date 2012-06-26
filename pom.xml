@@ -27,6 +27,13 @@
             <version>2.10.1</version>
         </dependency>
 
+        <!-- we use apache's httpclient for retrieving stuff -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.2</version>
+        </dependency>
+
         <!-- we use slf4j for logging. live with it -->
         <dependency>
             <groupId>org.slf4j</groupId>

@@ -1,6 +1,5 @@
 package com.github.jond3k.jonstructs.x
-
-import tasks.ThreadLoopHandle
+/*
 import com.github.jond3k.jonstructs.tasks.ThreadLoopHandle
 
 trait RunEveryBlock {
@@ -11,3 +10,4 @@ trait RunEveryBlock {
     }, intervalMs, deferred)
   }
 }
+*/

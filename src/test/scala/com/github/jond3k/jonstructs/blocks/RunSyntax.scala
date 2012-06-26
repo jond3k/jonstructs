@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
  */
 class RunSyntax extends RunBlocks {
 
-  delayed(ms=300) {
+ /* delayed(ms=300) {
     // code that gets run later
   }
 
@@ -23,6 +23,6 @@ class RunSyntax extends RunBlocks {
 
   retry(times=3, every=5, unit=TimeUnit.SECONDS) {
     // code that is repeatedly run at regular intervals
-  }
+  }*/
 
 }

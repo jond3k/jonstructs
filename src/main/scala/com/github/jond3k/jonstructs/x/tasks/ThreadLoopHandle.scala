@@ -1,7 +1,6 @@
-package com.github.jond3k.jonstructs.tasks
+package com.github.jond3k.jonstructs.x.tasks
 
 import java.util.concurrent.{Future, TimeUnit, Executors}
-import com.github.jond3k.jonstructs.x.{Terminable, Logging}
 import com.github.jond3k.jonstructs.{Logging, Terminable}
 
 class ThreadLoopHandle(action: () => Unit, sleepMs: Long, deferred: Boolean)

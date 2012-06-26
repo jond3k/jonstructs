@@ -14,7 +14,7 @@ trait DelayedBlock extends BlockScheduling {
    * @param fn
    * @return
    */
-  def delayed(ms: Long)(fn: => Unit) {
+  /*def delayed(ms: Long)(fn: => Unit) {
     delayed(ms, TimeUnit.MILLISECONDS)
   }
 
@@ -27,5 +27,5 @@ trait DelayedBlock extends BlockScheduling {
    */
   def delayed(t: Long, unit: TimeUnit)(fn: => Unit) {
     runBlockSchedule(fn, t, unit)
-  }
+  }*/
 }

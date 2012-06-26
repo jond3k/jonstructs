@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
  */
 trait EveryBlock {
 
-  /**
+  /*/**
    *
    * @param ms
    * @param fn
@@ -27,6 +27,6 @@ trait EveryBlock {
    */
   def every(t: Long, unit: TimeUnit)(fn: => Unit) {
 
-  }
+  }*/
 
 }
