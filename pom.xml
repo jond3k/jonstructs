@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.jond3k</groupId>
     <artifactId>jonstructs</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     <version>0.1-SNAPSHOT</version>
     <description>Language constructs for Scala</description>
     <properties>

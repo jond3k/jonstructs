@@ -1,13 +1,14 @@
 package com.github.jond3k.jonstructs.helpers
 
-import java.net.{BindException, ServerSocket}
+import java.net.{Socket, BindException, ServerSocket}
+import com.github.jond3k.jonstructs.blocks.RetryBlock
 
 /**
  * Adds behaviour that allows you to quickly allocate and deallocate ports in tests
  *
  * @author Jon Davey <jond3k@gmail.com>
  */
-trait SocketHelper {
+trait SocketHelper extends RetryBlock {
 
   /**
    * Determine if a port is free for us to use
@@ -50,4 +51,24 @@ trait SocketHelper {
    *
    */
   def findFreePort(): Int = findFreePorts(1).head.ensuring(_ > 0, "port <= 0")
+
+  /**
+   * Wait for the specified port to be opened
+   *
+   * @param port The port number
+   */
+  def waitForServer(port: Int) {
+    waitForServer("localhost", port)
+  }
+
+  def waitForServer(host: String, port: Int) {
+    val timeoutMs = 2000
+    val ms        = 250
+    val times     = java.lang.Math.floor(timeoutMs/ms).toLong
+
+    retry(ms, times) {
+      val sock = new Socket(host, port)
+      sock.close()
+    }
+  }
 }

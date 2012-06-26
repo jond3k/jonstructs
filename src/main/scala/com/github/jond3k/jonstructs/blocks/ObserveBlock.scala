@@ -1,4 +1,4 @@
-package com.github.jond3k.jonstructs.x
+package com.github.jond3k.jonstructs.blocks
 
 import com.github.jond3k.jonstructs.events.{Observer, EventSource}
 
