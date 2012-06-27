@@ -5,9 +5,35 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.jond3k</groupId>
     <artifactId>jonstructs</artifactId>
-    <packaging>jar</packaging>
     <version>0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>jconstructs</name>
     <description>Language constructs for Scala</description>
+    <url>https://github.com/jond3k/jonstructs</url>
+
+    <!-- fluff for sonatype -->
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/jond3k/jonstructs</url>
+        <connection>scm:git:https://github.com/jond3k/jonstructs.git</connection>
+        <developerConnection>scm:git:git@github.com:jond3k/jonstructs.git</developerConnection>
+    </scm>
+
+    <!-- fluff for sonatype -->
+    <developers>
+        <developer>
+            <id>jond3k</id>
+        </developer>
+    </developers>
+
     <properties>
         <scalaVersion>2.9.1</scalaVersion>
         <encoding>UTF-8</encoding>
@@ -22,9 +48,9 @@
 
         <!-- this is a scala project - pull in the scala maven plugin -->
         <dependency>
-            <groupId>org.scala-tools</groupId>
-            <artifactId>maven-scala-plugin</artifactId>
-            <version>2.10.1</version>
+            <groupId>net.alchim31.maven</groupId>
+            <artifactId>scala-maven-plugin</artifactId>
+            <version>3.0.2</version>
         </dependency>
 
         <!-- we use apache's httpclient for retrieving stuff -->
@@ -60,8 +86,8 @@
         <plugins>
             <!-- the maven scala plugin allows compilation of scala source code -->
             <plugin>
-                <groupId>org.scala-tools</groupId>
-                <artifactId>maven-scala-plugin</artifactId>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>scala-compile-first</id>
@@ -76,6 +102,12 @@
                         <phase>process-test-resources</phase>
                         <goals>
                             <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>doc-jar</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -121,8 +153,30 @@
                 </configuration>
             </plugin>
 
+            <!-- attach source code -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.scala-tools</groupId>
+                <artifactId>maven-scala-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </reporting>
 
     <pluginRepositories>
         <pluginRepository>
@@ -134,11 +188,11 @@
     <distributionManagement>
         <repository>
             <id>repo</id>
-            <url>https://github.com/jond3k/jond3k-mvn-repo/raw/master/releases</url>
+            <url>https://oss.sonatype.org/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>snapshot-repo</id>
-            <url>https://github.com/jond3k/jond3k-mvn-repo/raw/master/snapshots</url>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
