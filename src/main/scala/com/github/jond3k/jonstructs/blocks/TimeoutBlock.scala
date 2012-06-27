@@ -36,9 +36,11 @@ trait TimeoutBlock {
    * @param ms The number of ms to allow
    * @param fn The function to call
    * @return   The result of the function call
-   * @throws   RuntimeException     If the function failed to respond after being asked to terminate
-   * @throws   TimeoutException     If the function timed out while running (but otherwise returned correctly)
-   * @throws   Exception            Any underlying exceptions, including InterruptedExceptions from blocking IO calls
+   * @throws     java.lang.RuntimeException            If the function failed to respond after being asked to
+   *                                                   terminate
+   * @throws     java.util.concurrent.TimeoutException If the function failed to run in the allowed amount of time
+   * @throws     java.lang.Exception                   Any underlying exceptions, including InterruptedExceptions from
+   *                                                   blocking IO calls
    */
   def timeout[A](ms: Long)(fn: => A): A = {
     timeout(ms, TimeUnit.MILLISECONDS)(fn)
@@ -51,8 +53,11 @@ trait TimeoutBlock {
    * @param unit The time unit to use
    * @param fn   The function to call
    * @return     The result of the function call
-   * @throws     RuntimeException     If the function failed to respond after being asked to terminate
-   * @throws     Exception            Any underlying exceptions, including InterruptedExceptions from blocking IO calls
+   * @throws     java.lang.RuntimeException            If the function failed to respond after being asked to
+   *                                                   terminate
+   * @throws     java.util.concurrent.TimeoutException If the function failed to run in the allowed amount of time
+   * @throws     java.lang.Exception                   Any underlying exceptions, including InterruptedExceptions from
+   *                                                   blocking IO calls
    */
   def timeout[A](in: Long, unit: TimeUnit)(fn: => A): A = {
     val executor = Executors.newSingleThreadExecutor()

@@ -9,20 +9,24 @@ import java.util.concurrent.TimeUnit
  */
 class RunSyntax extends RunBlocks {
 
- /* delayed(ms=300) {
+ /*delayed(ms=300) {
     // code that gets run later
   }
 
   every(5, TimeUnit.SECONDS) {
     // code that gets called regularly
-  }
+  }*/
 
   timeout(ms=300) {
     // code that has a limited time to execute*
   }
 
+  retry(ms=50) {
+    // code that we try to run infinitely until it succeeds, retrying every 50ms
+  }
+
   retry(times=3, every=5, unit=TimeUnit.SECONDS) {
     // code that is repeatedly run at regular intervals
-  }*/
+  }
 
 }
