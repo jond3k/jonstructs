@@ -1,13 +1,42 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                        
-                             http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.jond3k</groupId>
     <artifactId>jonstructs</artifactId>
+    <version>0.4-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <version>0.1-SNAPSHOT</version>
+    <name>jonstructs</name>
     <description>Language constructs for Scala</description>
+    <url>https://github.com/jond3k/jonstructs</url>
+
+    <!-- fluff for sonatype -->
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/jond3k/jonstructs</url>
+        <connection>scm:git:https://github.com/jond3k/jonstructs.git</connection>
+        <developerConnection>scm:git:git@github.com:jond3k/jonstructs.git</developerConnection>
+    </scm>
+
+    <!-- fluff for sonatype -->
+    <developers>
+        <developer>
+            <id>jond3k</id>
+        </developer>
+    </developers>
+
     <properties>
         <scalaVersion>2.9.1</scalaVersion>
         <encoding>UTF-8</encoding>
@@ -22,9 +51,9 @@
 
         <!-- this is a scala project - pull in the scala maven plugin -->
         <dependency>
-            <groupId>org.scala-tools</groupId>
-            <artifactId>maven-scala-plugin</artifactId>
-            <version>2.10.1</version>
+            <groupId>net.alchim31.maven</groupId>
+            <artifactId>scala-maven-plugin</artifactId>
+            <version>3.0.2</version>
         </dependency>
 
         <!-- we use apache's httpclient for retrieving stuff -->
@@ -60,8 +89,8 @@
         <plugins>
             <!-- the maven scala plugin allows compilation of scala source code -->
             <plugin>
-                <groupId>org.scala-tools</groupId>
-                <artifactId>maven-scala-plugin</artifactId>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>scala-compile-first</id>
@@ -78,6 +107,12 @@
                             <goal>testCompile</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>doc-jar</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -92,7 +127,7 @@
             </plugin>
 
             <!-- enable scalatest -->
-            <plugin>
+            <!--<plugin>
               <groupId>org.scalatest</groupId>
               <artifactId>maven-scalatest-plugin</artifactId>
               <version>1.0-SNAPSHOT</version>
@@ -109,7 +144,7 @@
                   </goals>
                 </execution>
               </executions>
-            </plugin>
+            </plugin>-->
 
             <!-- override some maven compiler settings -->
             <plugin>
@@ -121,9 +156,47 @@
                 </configuration>
             </plugin>
 
+            <!-- attach source code -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- sign the repo -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.scala-tools</groupId>
+                <artifactId>maven-scala-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <!-- use the sonatype public repo -->
     <pluginRepositories>
         <pluginRepository>
             <id>org.sonatype</id>
@@ -131,17 +204,34 @@
         </pluginRepository>
     </pluginRepositories>
 
-    <distributionManagement>
-        <repository>
-            <id>repo</id>
-            <url>https://github.com/jond3k/jond3k-mvn-repo/raw/master/releases</url>
-        </repository>
-        <snapshotRepository>
-            <id>snapshot-repo</id>
-            <url>https://github.com/jond3k/jond3k-mvn-repo/raw/master/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
-
-    <repositories>
-    </repositories>
+    <!-- a profile that allows us to skip gpg generation with snapshots -->
+    <profiles>
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.1</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

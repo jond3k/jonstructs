@@ -2,6 +2,7 @@ package com.github.jond3k.jonstructs.helpers
 
 import java.net.{Socket, BindException, ServerSocket}
 import com.github.jond3k.jonstructs.blocks.RetryBlock
+import annotation.tailrec
 
 /**
  * Adds behaviour that allows you to quickly allocate and deallocate ports in tests
@@ -30,27 +31,36 @@ trait SocketHelper extends RetryBlock {
   }
 
   /**
-   * Like findFreePort() but returns a list of ports
-   */
-  def findFreePorts(count: Int): List[Int] = {
-    val sockets =
-      for (i <- 0 until count)
-      yield new ServerSocket(0)
-    val socketList = sockets.toList
-    val ports = socketList.map(_.getLocalPort.ensuring(_ > 0, "port <= 0"))
-    socketList.map(_.close())
-    ports
-  }
-
-  /**
-   * Allows you to pick a free port.
+   * Allows you to pick a free port. Will allocate anything over 1024
    *
    * We create a socket with an OS-determined port. We then close the socket and use the port for our own purposes. For
    * this reason there's a rare potential race condition. To make this a less likely to happen, make sure repeated calls
    * are sequential.
-   *
    */
-  def findFreePort(): Int = findFreePorts(1).head.ensuring(_ > 0, "port <= 0")
+  def findFreePort(): Int = {
+    val socket = new ServerSocket(0)
+    val port   = socket.getLocalPort.ensuring(_ > 0, "port <= 0")
+    socket.close()
+    port
+  }
+
+  /**
+   * Will sweep from that value upwards until it finds a free port, starting from a specified value
+   *
+   * This makes sense if you want a 'best case' port or want the port to have a more obvious value. I created this
+   * mostly because it's difficult to add new ZooKeeper hosts to the Eclipse ZooKeeper plugin, so having it reuse common
+   * values like 22181 means I can reuse the entry between integration test runs.
+   *
+   * @param startPort The port to begin scanning from
+   * @return The port
+   */
+  @tailrec
+  final def findFreePort(startPort: Int): Int = {
+    isPortFree(startPort) match {
+      case true  => startPort
+      case false => findFreePort(startPort+1)
+    }
+  }
 
   /**
    * Wait for the specified port to be opened

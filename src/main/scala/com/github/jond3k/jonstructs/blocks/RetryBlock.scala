@@ -16,7 +16,7 @@ trait RetryBlock extends Logging {
    * @param ms The number of milliseconds to wait between each retry
    * @param fn The function to call
    */
-  def retry(ms: Long)(fn: => Unit) {
+  def retry[A](ms: Long)(fn: => A) {
     retry(-1, ms)(fn)
   }
 
@@ -38,7 +38,7 @@ trait RetryBlock extends Logging {
    * @param ms
    * @param fn
    */
-  def retry(times: Long, ms: Long)(fn: => Unit) {
+  def retry[A](times: Long, ms: Long)(fn: => A): A = {
     retry(times, ms, TimeUnit.MILLISECONDS)(fn)
   }
 
@@ -48,7 +48,7 @@ trait RetryBlock extends Logging {
    * @param ms The number of milliseconds to wait between each retry
    * @param fn The function to call
    */
-  def retry(ms: Long, silent: Boolean)(fn: => Unit) {
+  def retry[A](ms: Long, silent: Boolean)(fn: => A): A = {
     retry(-1, ms, silent)(fn)
   }
 
@@ -70,7 +70,7 @@ trait RetryBlock extends Logging {
    * @param ms
    * @param fn
    */
-  def retry(times: Long, ms: Long, silent: Boolean)(fn: => Unit) {
+  def retry[A](times: Long, ms: Long, silent: Boolean)(fn: => A): A = {
     retry(times, ms, TimeUnit.MILLISECONDS, silent)(fn)
   }
 
