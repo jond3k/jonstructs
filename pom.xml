@@ -13,7 +13,7 @@
     <artifactId>jonstructs</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>jconstructs</name>
+    <name>jonstructs</name>
     <description>Language constructs for Scala</description>
     <url>https://github.com/jond3k/jonstructs</url>
 
