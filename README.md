@@ -132,21 +132,13 @@ still be running. This can happen if you're using JNI IO libraries like JZMQ or 
 
 ### How do I use this from Maven? ###
 
-Use this dependency for the bleeding edge
+You can pull this dependency from Maven Central
 
     <dependency>
         <groupId>com.github.jond3k</groupId>
         <artifactId>jonstructs</artifactId>
-        <version>0.1-SNAPSHOT</version>
+        <version>0.3</version>
     </dependency>
 
-and this repository
+Enjoy!
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>snapshot-repo</id>
-            <url>https://github.com/jond3k/jond3k-mvn-repo/raw/master/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
-
-I should probably but this in sonatype or something.
