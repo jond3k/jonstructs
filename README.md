@@ -189,7 +189,7 @@ still be running. This can happen if you're using JNI IO libraries like JZMQ or 
 
 ### How do I use this from Maven? ###
 
-Just add this 
+You can pull this dependency from Maven Central
 
     <dependency>
         <groupId>com.github.jond3k</groupId>
@@ -197,14 +197,5 @@ Just add this
         <version>0.3</version>
     </dependency>
 
-If you aren't already using the Sonatype repository you'll need to add this
+Enjoy!
 
-  <repositories>
-    <repository>
-      <id>sonatype-oss</id>
-      <name>Sonatype OSS</name>
-      <url>https://oss.sonatype.org/content/groups/public/</url>
-    </repository>
-  </repositories>
-
-I should probably but this in sonatype or something.
