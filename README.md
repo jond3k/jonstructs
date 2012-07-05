@@ -144,6 +144,14 @@ Another problem integration tests can face is isolating temporary data. The _Dir
 A new test directory is created under /tmp/. This will be freed when the JVM terminates gracefully. If it crashes, the
 folder will still be around to allow easier debugging.
 
+### Swallowing exceptions ###
+
+Exception handling can introduce
+
+    swallow(socket.close())
+    swallow(log.error, socket.close())
+    val result = swallow(input.read())
+
 ### HTTP requests ###
 
 There are a lot of different ways to make HTTP requests but most come with a learning curve and require a lot of
