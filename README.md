@@ -222,7 +222,7 @@ You can pull this dependency from Maven Central
     <dependency>
         <groupId>com.github.jond3k</groupId>
         <artifactId>jonstructs</artifactId>
-        <version>0.3</version>
+        <version>0.4</version>
     </dependency>
 
 Enjoy!
