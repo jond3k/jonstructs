@@ -29,8 +29,23 @@ class RunSyntax extends RunBlocks {
     // code that is repeatedly run at regular intervals
   }
 
+  val running = true
+  val input = new Object{ def close() {}; def nextMessage() = {"result"} }
+  def processMessage(s: String) {}
+
   swallow(log.error) {
     // code that has its exceptions logged but which don't bubble up
+  }
+
+  swallow(log.error)(input.close)
+
+  while(running) {
+    swallow(log.error) {
+      input.nextMessage()
+    } match {
+      case Some(m) => processMessage(m)
+      case None    =>
+    }
   }
 
   val action = every(5, TimeUnit.SECONDS) {
@@ -43,7 +58,7 @@ class RunSyntax extends RunBlocks {
   }
   action2.cancel()
 
-  val result = retry(ms=50) {
+  var result = retry(ms=50) {
     // code that we try to run infinitely until it succeeds and returns us a value
   }
 

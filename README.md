@@ -71,9 +71,18 @@ You can also get tighter control over the queue
 By default we will queue an unlimited number of events. You can instead set a queue capacity and decide to block or drop
 when it's full.
 
-## Scheduling ##
+## Run blocks ##
 
-Scheduling blocks give you temporal control over execution. Add the _SchedulingBlocks_ trait to your class.
+Run blocks give you temporal control over execution. Add the _RunBlocks_ trait to your class.
+
+### Try, try again ###
+
+    retry(times=3, every=5, unit=TimeUnit.SECONDS) {
+      // code that is repeatedly run at regular intervals
+    }
+
+Run some code straight away. If it fails, try again a few times after a 5 second cool-off period. If it still hasn't
+succeeded after 3 tries the last exception encountered will bubble up.
 
 ### Do something in the future ###
 
@@ -100,14 +109,33 @@ Some code will get called every 5 seconds.
 You start running something straight away but wait for it to finish or time out. See the _tips_ section for its
 limitations.
 
-### Try, try again ###
+### Swallowing exceptions ###
 
-    retry(times=3, every=5, unit=TimeUnit.SECONDS) {
-      // code that is repeatedly run at regular intervals
+To reduce the amount of boilerplate you can swallow up all exceptions in a block, safely logging their results with a
+log function.
+
+    swallow(log.error) {
+      // code that has its exceptions logged but which don't bubble up
     }
 
-Run some code straight away. If it fails, try again a few times after a 5 second cool-off period. If it still hasn't
-succeeded after 3 tries the last exception encountered will bubble up.
+This is particularly useful in finally blocks
+
+    swallow(log.error)(input.close)
+
+The block will return a value which will be encapsulated within an option. You can use this to write clean recovery
+code
+
+  while(running) {
+    swallow(log.error) {
+      input.nextMessage()
+    } match {
+      case Some(m) => processMessage(m)
+      case None    =>
+    }
+  }
+
+Careful with this function as it treats all exceptions the same. Don't use InterruptedExceptions alone to signal
+shutdown.
 
 ## Helpers ##
 
@@ -143,14 +171,6 @@ Another problem integration tests can face is isolating temporary data. The _Dir
 
 A new test directory is created under /tmp/. This will be freed when the JVM terminates gracefully. If it crashes, the
 folder will still be around to allow easier debugging.
-
-### Swallowing exceptions ###
-
-Exception handling can introduce
-
-    swallow(socket.close())
-    swallow(log.error, socket.close())
-    val result = swallow(input.read())
 
 ### HTTP requests ###
 
