@@ -125,14 +125,14 @@ This is particularly useful in finally blocks
 The block will return a value which will be encapsulated within an option. You can use this to write clean recovery
 code
 
-  while(running) {
-    swallow(log.error) {
-      input.nextMessage()
-    } match {
-      case Some(m) => processMessage(m)
-      case None    =>
+    while(running) {
+      swallow(log.error) {
+        input.nextMessage()
+      } match {
+        case Some(m) => processMessage(m)
+        case None    =>
+      }
     }
-  }
 
 Careful with this function as it treats all exceptions the same. Don't use InterruptedExceptions alone to signal
 shutdown.
