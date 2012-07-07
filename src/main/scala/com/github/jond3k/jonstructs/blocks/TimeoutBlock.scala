@@ -53,8 +53,6 @@ trait TimeoutBlock {
    * @param unit The time unit to use
    * @param fn   The function to call
    * @return     The result of the function call
-   * @throws     java.lang.RuntimeException            If the function failed to respond after being asked to
-   *                                                   terminate
    * @throws     java.util.concurrent.TimeoutException If the function failed to run in the allowed amount of time
    * @throws     java.lang.Exception                   Any underlying exceptions, including InterruptedExceptions from
    *                                                   blocking IO calls
@@ -74,9 +72,6 @@ trait TimeoutBlock {
     catch {
       // extract the underlying exception if the call failed
       case e: ExecutionException => throw e.getCause
-      // bubble up the timeout exception if the executor didn't return
-      case e: TimeoutException if !executor.awaitTermination(timeoutWaitForThreadMs, TimeUnit.MILLISECONDS) =>
-        throw new RuntimeException("Failed to respond to terminate request after timeout", e)
     }
   }
 }

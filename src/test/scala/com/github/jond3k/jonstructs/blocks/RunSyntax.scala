@@ -25,7 +25,7 @@ class RunSyntax extends RunBlocks {
     // code that we try to run infinitely until it succeeds, retrying every 50ms
   }
 
-  retry(times=3, every=5, unit=TimeUnit.SECONDS) {
+  retry(retries=3, every=5, unit=TimeUnit.SECONDS) {
     // code that is repeatedly run at regular intervals
   }
 

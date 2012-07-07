@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit
  *
  * @author Jon Davey <jond3k@gmail.com>
  */
-trait DelayedBlock extends BlockScheduling {
+trait DelayedBlock extends SchedulingBlock {
 
   /**
    *

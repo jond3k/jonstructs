@@ -21,17 +21,6 @@ trait SwallowBlock {
   }
 
   /**
-   * Swallow an exception. There may be a return value if it was successful
-   *
-   * @param  a The method to call
-   * @tparam A The return type
-   * @return The return value on success
-   */
-  def swallow[A](a: => A): Option[A] = {
-    swallow(null, a)
-  }
-
-  /**
    * Swallow an exception, logging it with the specified log function. There
    * may be a return value if it was successful.
    *
@@ -40,7 +29,7 @@ trait SwallowBlock {
    * @tparam A The return type
    * @return The return value on success
    */
-  def swallow[A](h: (String) => Unit, a: => A): Option[A] = {
+  def swallow[A](h: (String) => Unit = null)(a: => A): Option[A] = {
     try {
       Some(a)
     } catch {

@@ -25,29 +25,25 @@ class SwallowBlockTest
   def throwsZP: String = throw new RuntimeException("should be caught")
 
   test("returns some value if there was no exception") {
-    swallow(returns) must equal(Some(returns()))
+    swallow() {returns() } must equal(Some(returns()))
   }
 
   test("returns none if there was an exception") {
-    swallow(throws) must equal(None)
+    swallow() { throws() } must equal(None)
   }
 
   test("returns some value if there was no exception (zero-paren)") {
-    swallow(returnsZP) must equal(Some(returnsZP))
+    swallow() { returnsZP } must equal(Some(returnsZP))
   }
 
   test("returns none if there was an exception (zero-paren)") {
-    swallow(throwsZP) must equal(None)
-  }
-
-  test("swallows all exceptions without logging") {
-    swallow(throw new RuntimeException("should be caught"))
+    swallow() { throwsZP } must equal(None)
   }
 
   test("swallows all exceptions and logs them") {
     val log = mock[Logger]
     val ex  = new RuntimeException("should be caught")
-    swallow(log.error, throw ex) must equal(None)
+    swallow(log.error) { throw ex } must equal(None)
     verify(log).error(_swallowString(ex))
   }
 }
