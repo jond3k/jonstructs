@@ -1,6 +1,7 @@
 package com.github.jond3k.jonstructs.blocks
 
 import java.util.concurrent.TimeUnit
+import java.util
 
 /**
  *
@@ -14,8 +15,8 @@ trait DelayedBlock extends SchedulingBlock {
    * @param fn
    * @return
    */
-  /*def delayed(ms: Long)(fn: => Unit) {
-    delayed(ms, TimeUnit.MILLISECONDS)
+  def delayed(ms: Long)(fn: => Unit): util.TimerTask = {
+    delayed(ms, TimeUnit.MILLISECONDS)(fn)
   }
 
   /**
@@ -25,7 +26,9 @@ trait DelayedBlock extends SchedulingBlock {
    * @param fn
    * @return
    */
-  def delayed(t: Long, unit: TimeUnit)(fn: => Unit) {
-    runBlockSchedule(fn, t, unit)
-  }*/
+  def delayed(t: Long, unit: TimeUnit)(fn: => Unit): util.TimerTask = {
+    val task = new ScheduleBlockTimerTask(fn)
+    _scheduleBlockTimer.schedule(task, unit.toMillis(t))
+    task
+  }
 }

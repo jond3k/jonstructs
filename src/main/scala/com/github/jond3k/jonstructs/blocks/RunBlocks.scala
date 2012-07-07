@@ -5,6 +5,11 @@ package com.github.jond3k.jonstructs.blocks
  *
  * @author Jon Davey <jond3k@gmail.com>
  */
-trait RunBlocks extends TimeoutBlock with RetryBlock with DelayedBlock with EveryBlock {
+trait RunBlocks
+  extends TimeoutBlock
+  with RetryBlock
+  with DelayedBlock
+  with EveryBlock
+  with SwallowBlock {
 
 }
