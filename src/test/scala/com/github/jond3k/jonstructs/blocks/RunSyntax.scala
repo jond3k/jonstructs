@@ -9,13 +9,13 @@ import java.util.concurrent.TimeUnit
  */
 class RunSyntax extends RunBlocks {
 
- /*delayed(ms=300) {
+ delayed(ms=300) {
     // code that gets run later
   }
 
   every(5, TimeUnit.SECONDS) {
     // code that gets called regularly
-  }*/
+  }
 
   timeout(ms=300) {
     // code that has a limited time to execute*
@@ -29,4 +29,22 @@ class RunSyntax extends RunBlocks {
     // code that is repeatedly run at regular intervals
   }
 
+  swallow(log.error) {
+    // code that has its exceptions logged but which don't bubble up
+  }
+
+  val action = every(5, TimeUnit.SECONDS) {
+    // code that gets called regularly unless we ask it to stop
+  }
+  action.cancel()
+
+  val action2 = delayed(5, TimeUnit.SECONDS) {
+    // code that gets called later unless we ask it to stop
+  }
+  action2.cancel()
+
+  val result = retry(ms=50) {
+    // code that we try to run infinitely until it succeeds and returns us a value
+  }
+  
 }
