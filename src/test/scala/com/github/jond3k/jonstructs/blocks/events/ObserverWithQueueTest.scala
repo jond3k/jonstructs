@@ -9,5 +9,7 @@ class ObserverWithQueueTest
   with MustMatchers
   with MockitoSugar {
 
-  pending
+  test("todo") {
+    pending
+  }
 }

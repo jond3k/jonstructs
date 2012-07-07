@@ -7,7 +7,7 @@ import com.github.jond3k.jonstructs.events.{Observer, EventSource}
 import org.mockito.Mockito._
 import com.github.jond3k.jonstructs.blocks.ObserveBlock
 
-class ObservingSpec
+class ObservingTest
   extends FunSuite
   with MustMatchers
   with MockitoSugar {
@@ -40,6 +40,6 @@ class ObservingSpec
     val es = new EventSource[Int]
     sut.observe(es) {i => triggered = triggered + i }
     (0 to 3).foreach(i=>es.raise(1))
-    triggered must equal(3)
+    triggered must equal(4)
   }
 }
