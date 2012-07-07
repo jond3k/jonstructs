@@ -46,5 +46,5 @@ class RunSyntax extends RunBlocks {
   val result = retry(ms=50) {
     // code that we try to run infinitely until it succeeds and returns us a value
   }
-  
+
 }

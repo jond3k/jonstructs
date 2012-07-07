@@ -14,7 +14,7 @@ trait ObserveBlock {
    * @tparam A The parameter type for the event handler
    * @return THe observer object. Can be used to unsubscribe
    */
-  def observe[A](es: EventSource[A])(ev: A => Unit) = {
+  def observe[A](es: EventSource[A])(ev: A => Unit): Observer[A] = {
     val ob = new Observer(es, ev)
     ob.initialize()
     ob

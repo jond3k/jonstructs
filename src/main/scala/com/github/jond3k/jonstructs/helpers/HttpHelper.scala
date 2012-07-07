@@ -33,13 +33,10 @@ trait HttpHelper {
   def request(uri: URI): (Int, String) = {
     val client = new DefaultHttpClient
     try {
-      val get = new HttpGet(uri)
-      //put.setHeader("Accept", MediaType.APPLICATION_JSON)
-      //put.setHeader("Content-Type", MediaType.APPLICATION_JSON)
-
+      val get      = new HttpGet(uri)
       val response = client.execute(get)
 
-      val body = Option(response.getEntity) match {
+      val body     = Option(response.getEntity) match {
         case Some(e) => EntityUtils.toString(e)
         case None => ""
       }
