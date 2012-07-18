@@ -109,6 +109,29 @@ Some code will get called every 5 seconds.
 You start running something straight away but wait for it to finish or time out. See the _tips_ section for its
 limitations.
 
+### You can catch exceptions thrown in delayed and timer blocks ###
+
+You can provide a user-defined function
+
+    def myErrorHandler(t: Throwable) {}
+
+    every(ms=30, onError=myErrorHandler(_)) {
+        throw new Exception("Buuurn")
+    }
+
+Or write one inline
+
+    delayed(ms=30, onError=log.error("We seem to have some kind of problem!", _)) {
+        throw new Exception("Zing")
+    }
+
+The default behaviour is to produce an error message in the logs. If you'd like to do something else, you can override
+the method. This will be run in a different thread to the one that registers your block so be careful with shared data.
+
+    override def defaultScheduledErrorHandler(t: Throwable) {
+        // do something!
+    }
+
 ### Swallowing exceptions ###
 
 To reduce the amount of boilerplate you can swallow up all exceptions in a block, safely logging their results with a

@@ -11,7 +11,7 @@ class RunSyntax extends RunBlocks {
 
  delayed(ms=300) {
     // code that gets run later
-  }
+ }
 
   every(5, TimeUnit.SECONDS) {
     // code that gets called regularly
@@ -51,12 +51,12 @@ class RunSyntax extends RunBlocks {
   val action = every(5, TimeUnit.SECONDS) {
     // code that gets called regularly unless we ask it to stop
   }
-  action.cancel()
+  action.cancel(false)
 
   val action2 = delayed(5, TimeUnit.SECONDS) {
     // code that gets called later unless we ask it to stop
   }
-  action2.cancel()
+  action2.cancel(false)
 
   var result = retry(ms=50) {
     // code that we try to run infinitely until it succeeds and returns us a value
