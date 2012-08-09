@@ -48,8 +48,8 @@ trait RetryBlock extends Logging {
    * @param ms The number of milliseconds to wait between each retry
    * @param fn The function to call
    */
-  def retry[A](ms: Long, silent: Boolean)(fn: => A): A = {
-    retry(-1, ms, silent)(fn)
+  def retry[A](ms: Long, onError: Throwable => Unit)(fn: => A): A = {
+    retry(-1, ms, onError)(fn)
   }
 
   /**
@@ -59,8 +59,8 @@ trait RetryBlock extends Logging {
    * @param unit  The time unit to use
    * @param fn    The function to call
    */
-  def retry[A](every: Long, unit: TimeUnit, silent: Boolean)(fn: => A): A = {
-    retry(-1, every, unit, silent)(fn)
+  def retry[A](every: Long, unit: TimeUnit, onError: Throwable => Unit)(fn: => A): A = {
+    retry(-1, every, unit, onError)(fn)
   }
 
   /**
@@ -70,8 +70,8 @@ trait RetryBlock extends Logging {
    * @param ms
    * @param fn
    */
-  def retry[A](retries: Long, ms: Long, silent: Boolean)(fn: => A): A = {
-    retry(retries, ms, TimeUnit.MILLISECONDS, silent)(fn)
+  def retry[A](retries: Long, ms: Long, onError: Throwable => Unit)(fn: => A): A = {
+    retry(retries, ms, TimeUnit.MILLISECONDS, onError)(fn)
   }
 
   /**
@@ -83,20 +83,24 @@ trait RetryBlock extends Logging {
    * @param fn      The function to call
    */
   @tailrec
-  final def retry[A](retries: Long, every: Long, unit: TimeUnit, silent: Boolean = false)(fn: => A): A = {
-
+  final def retry[A](
+                      retries: Long,
+                      every: Long,
+                      unit: TimeUnit,
+                      onError: Throwable => Unit = _defaultRetryLogger)(fn: => A): A = {
     try {
       return fn
     } catch {
-      case e if !silent && retries == -1 => _retryLogger(_retryString(retries), e)
-      case e if !silent && retries > 0   => _retryLogger(_retryString(retries), e)
+      case e if retries == -1 => onError(e)
+      case e if retries >   0 => onError(e)
+      // otherwise, bubble up
     }
     Thread.sleep(unit.toMillis(every))
     val next = (retries - 1).max(-1)
-    retry(next, every, unit, silent)(fn)
+    retry(next, every, unit, onError)(fn)
   }
 
-  protected def _retryString(remaining: Long) = "Retrying. %s remaining" format remaining
-
-  protected var _retryLogger: (String, Throwable) => Unit = log.error
+  protected def _defaultRetryLogger(e: Throwable) {
+    log.error("Retrying", e)
+  }
 }
