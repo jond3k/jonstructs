@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.jond3k</groupId>
     <artifactId>jonstructs</artifactId>
-    <version>0.6-SNAPSHOT</version>
+    <version>0.6</version>
     <packaging>jar</packaging>
     <name>jonstructs</name>
     <description>Language constructs for Scala</description>
