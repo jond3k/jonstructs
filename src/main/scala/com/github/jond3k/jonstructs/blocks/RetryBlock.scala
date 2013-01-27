@@ -91,8 +91,8 @@ trait RetryBlock extends Logging {
     try {
       return fn
     } catch {
-      case e if retries == -1 => onError(e)
-      case e if retries >   0 => onError(e)
+      case e: Exception if retries == -1 => onError(e)
+      case e: Exception if retries >   0 => onError(e)
       // otherwise, bubble up
     }
     Thread.sleep(unit.toMillis(every))
